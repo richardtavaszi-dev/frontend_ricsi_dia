@@ -54,64 +54,37 @@
     </div>
     <script>
 
-        class ShopItem {
+        items = [];
+
+        class ShopItem{
             nev;
             mennyiseg;
-            mennyiseg_egyseg;
+            mennyisegi_egyseg;
             kategoria;
-            id;
-
-            constructor(nev, mennyiseg, mennyiseg_egyseg, kategoria) {
-                this.id = crypto.randomUUID();
-                this.mennyiseg = mennyiseg;
-                this.mennyiseg_egyseg = mennyiseg_egyseg;
-                this.kategoria = kategoria;
+            constructor(nev, mennyiseg, mennyisegi_egyseg, kategoria){
+                
                 this.nev = nev;
-
-            }
-            
-        }
-
-        items = [];
-        load();
+                this.mennyiseg = mennyiseg;
+                this.mennyisegi_egyseg = mennyisegi_egyseg;
+                this.kategoria = kategoria;
+        }}
+        function add(){
+            items.push(new ShopItem( 
+            document.getElementById('inp_nev').value,
+            parseInt(document.getElementById('inp_mennyiseg').value),
+            document.getElementById('sel_mennyiseg_egyseg').value,
+            document.getElementById('sel_kategoria').value,
+        ))
+        
         display();
-
-        function add() {
-            items.push(new ShopItem(
-                document.getElementById('inp_nev').value,
-                parseFloat(document.getElementById('inp_mennyiseg').value),
-                document.getElementById('sel_mennyiseg_egyseg').value,
-                document.getElementById('sel_kategoria').value,
-            ));
-            
-            
-            display();
-            }
-            
-            
-                    
-        
-        
-        function display() {
+        }
+        function display(){
             document.getElementById('result').innerHTML = '';
             items.forEach(x => {
-                document.getElementById('result').innerHTML +=
-                    `<li class="list-group-item list-group-item-info">
-                        <i class="fa-brands fa-shopify"></i> ${x.nev} ${x.mennyiseg} 
-                        ${x.mennyiseg_egyseg}</li>`
-
-                          
+                document.getElementById('result').innerHTML += 
+                `<li class="list-group-item">${x.nev} ${x.mennyiseg} ${x.mennyisegi_egyseg}</li>`
             });
-            save();  
         }
-        function load(){
-    items = JSON.parse(localStorage.getItem('items') ?? '[]');
-        }
-
-    function save(){
-    localStorage.setItem('items', JSON.stringify(items));
-}
- 
     </script>
 </body>
 

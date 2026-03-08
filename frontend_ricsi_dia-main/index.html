@@ -1,52 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
 </head>
+
 <body>
-    <div class="container-md">
+    <div class="container-sm">
         <h1>Bevásárlólista</h1>
         <div class="row">
-            <div class="col-md-6">
-                <input class="form-control" />
+            <div class="col-sm-6">
+
                 <h4>Hozzávaló hozzáadása</h4>
                 <label class="form-label">Hozzávaló neve</label>
-                <input type="text" class="form-control" />
+                <input id="inp_nev" type="text" class="form-control" />
                 <label class="form-label mt-2">Mennyiség</label>
-                <input type="number" class="form-control" />
+                <input id="inp_mennyiseg" type="number" class="form-control" />
                 <label class="form-label mt-2">Mennyiség egység</label>
-                <select class="form-select">
-                    <option value="1">kg</option>
-                    <option value="2">g</option>
-                    <option value="3">l</option>
-                    <option value="4">ml</option>
-                    <option value="5">db</option>
+                <select id="sel_mennyiseg_egyseg" class="form-select">
+                    <option value="kg">kg</option>
+                    <option value="g">g</option>
+                    <option value="l">l</option>
+                    <option value="ml">ml</option>
+                    <option value="db">db</option>
                 </select>
                 <label class="form-label mt-2">Kategória</label>
-                <select class="form-select">
-                    <option value="1">Húsfélék</option>
+                <select id="sel_kategoria" class="form-select">
+                    <option value="1">Húsfélék/tejtermékek </option>
                     <option value="2">Gyümölcs/zöldség</option>
                     <option value="3">Tésztafélék/péktermékek</option>
                     <option value="4">Késztermékek</option>
                 </select>
-                <button class="btn btn-primary mt-2">Hozzáadás</button>
+                <button onclick="add()" class="btn btn-primary mt-2">Hozzáadás</button>
 
 
             </div>
-            <div class="col-md-6">
-                <input class="form-control" />
+            <div class="col-sm-6">
+                <h4>Bevásárlólista</h4>
+                <ul id="result" class="list-group">
+                    
+                </ul>
+                
             </div>
         </div>
     </div>
     <script>
+
+        class ShopItem {
+            nev;
+            mennyiseg;
+            mennyiseg_egyseg;
+            kategoria;
+            id;
+
+            constructor(nev, mennyiseg, mennyiseg_egyseg, kategoria) {
+                this.id = crypto.randomUUID();
+                this.mennyiseg = mennyiseg;
+                this.mennyiseg_egyseg = mennyiseg_egyseg;
+                this.kategoria = kategoria;
+                this.nev = nev;
+
+            }
+            
+        }
+
+        items = [];
+        load();
+        display();
+
+        function add() {
+            items.push(new ShopItem(
+                document.getElementById('inp_nev').value,
+                parseFloat(document.getElementById('inp_mennyiseg').value),
+                document.getElementById('sel_mennyiseg_egyseg').value,
+                document.getElementById('sel_kategoria').value,
+            ));
+            
+            
+            display();
+            }
+            
+            
+                    
         
+        
+        function display() {
+            document.getElementById('result').innerHTML = '';
+            items.forEach(x => {
+                document.getElementById('result').innerHTML +=
+                    `<li class="list-group-item list-group-item-info">
+                        <i class="fa-brands fa-shopify"></i> ${x.nev} ${x.mennyiseg} 
+                        ${x.mennyiseg_egyseg}</li>`
+
+                          
+            });
+            save();  
+        }
+        function load(){
+    items = JSON.parse(localStorage.getItem('items') ?? '[]');
+        }
+
+    function save(){
+    localStorage.setItem('items', JSON.stringify(items));
+}
+ 
     </script>
 </body>
+
 </html>

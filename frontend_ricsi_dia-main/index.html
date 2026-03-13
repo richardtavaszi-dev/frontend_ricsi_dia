@@ -47,42 +47,44 @@
                 <h4>Bevásárlólista</h4>
                 <ul id="result" class="list-group">
                     
+                    
                 </ul>
-                
+
+
             </div>
         </div>
     </div>
     <script>
-
-        items = [];
-
-        class ShopItem{
-            nev;
-            mennyiseg;
-            mennyisegi_egyseg;
-            kategoria;
-            constructor(nev, mennyiseg, mennyisegi_egyseg, kategoria){
-                
+        class Bevasarlolista {
+            constructor(nev, mennyiseg, mennyisegi_egyseg, kategoria) {
+                this.id = crypto.randomUUID();
                 this.nev = nev;
                 this.mennyiseg = mennyiseg;
                 this.mennyisegi_egyseg = mennyisegi_egyseg;
                 this.kategoria = kategoria;
-        }}
-        function add(){
-            items.push(new ShopItem( 
-            document.getElementById('inp_nev').value,
-            parseInt(document.getElementById('inp_mennyiseg').value),
-            document.getElementById('sel_mennyiseg_egyseg').value,
-            document.getElementById('sel_kategoria').value,
-        ))
-        
-        display();
+            }
         }
-        function display(){
+
+        items = [];
+
+        function add() {
+            items.push(new Bevasarlolista(
+                document.getElementById('inp_nev').value,
+                parseInt(document.getElementById('inp_mennyiseg').value),
+                document.getElementById('sel_mennyiseg_egyseg').value,
+                document.getElementById('sel_kategoria').value,
+
+            ))
+            display();
+        }
+
+        function display() {
             document.getElementById('result').innerHTML = '';
             items.forEach(x => {
-                document.getElementById('result').innerHTML += 
-                `<li class="list-group-item">${x.nev} ${x.mennyiseg} ${x.mennyisegi_egyseg}</li>`
+                document.getElementById('result').innerHTML +=
+                    `
+                    <li class="list-group-item">${x.nev} ${x.mennyiseg} ${x.mennyisegi_egyseg}</li>
+                    `
             });
         }
     </script>

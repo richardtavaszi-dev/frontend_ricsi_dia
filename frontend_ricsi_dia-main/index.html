@@ -45,37 +45,34 @@
             </div>
             <div class="col-sm-6">
                 <h4>Bevásárlólista</h4>
-                <ul id="result" class="list-group">
+                <ul class="list-group">
                     
                     
                 </ul>
-
-
             </div>
         </div>
     </div>
     <script>
-        class Bevasarlolista {
-            constructor(nev, mennyiseg, mennyisegi_egyseg, kategoria) {
+
+        class Itemsshop {
+            constructor(nev, mennyiseg, mennyiseg_egyseg, kategoria) {
                 this.id = crypto.randomUUID();
                 this.nev = nev;
                 this.mennyiseg = mennyiseg;
-                this.mennyisegi_egyseg = mennyisegi_egyseg;
+                this.mennyiseg_egyseg = mennyiseg_egyseg
                 this.kategoria = kategoria;
             }
         }
-
         items = [];
-
         function add() {
-            items.push(new Bevasarlolista(
+            items.push(new Itemsshop(
                 document.getElementById('inp_nev').value,
                 parseInt(document.getElementById('inp_mennyiseg').value),
                 document.getElementById('sel_mennyiseg_egyseg').value,
                 document.getElementById('sel_kategoria').value,
-
-            ))
-            display();
+            ));
+            console.log(items);
+            //display();
         }
 
         function display() {
@@ -83,10 +80,11 @@
             items.forEach(x => {
                 document.getElementById('result').innerHTML +=
                     `
-                    <li class="list-group-item">${x.nev} ${x.mennyiseg} ${x.mennyisegi_egyseg}</li>
-                    `
+                    <li class="list-group-item"><i class="fa-brands fa-canadian-maple-leaf"></i> ${x.nev} ${x.mennyiseg} ${x.mennyiseg_egyseg}</li>
+                    `;
             });
         }
+
     </script>
 </body>
 

@@ -18,7 +18,6 @@
         <h1>Bevásárlólista</h1>
         <div class="row">
             <div class="col-sm-6">
-
                 <h4>Hozzávaló hozzáadása</h4>
                 <label class="form-label">Hozzávaló neve</label>
                 <input id="inp_nev" type="text" class="form-control" />
@@ -40,51 +39,42 @@
                     <option value="4">Késztermékek</option>
                 </select>
                 <button onclick="add()" class="btn btn-primary mt-2">Hozzáadás</button>
-
-
             </div>
             <div class="col-sm-6">
                 <h4>Bevásárlólista</h4>
-                <ul class="list-group">
-                    
-                    
-                </ul>
+                <ul id="result" class="list-group"></ul>
             </div>
         </div>
     </div>
     <script>
-
-        class Itemsshop {
+        class Shopitem {
             constructor(nev, mennyiseg, mennyiseg_egyseg, kategoria) {
                 this.id = crypto.randomUUID();
                 this.nev = nev;
                 this.mennyiseg = mennyiseg;
-                this.mennyiseg_egyseg = mennyiseg_egyseg
+                this.mennyiseg_egyseg = mennyiseg_egyseg;
                 this.kategoria = kategoria;
             }
         }
         items = [];
         function add() {
-            items.push(new Itemsshop(
+            items.push(new Shopitem(
                 document.getElementById('inp_nev').value,
                 parseInt(document.getElementById('inp_mennyiseg').value),
                 document.getElementById('sel_mennyiseg_egyseg').value,
                 document.getElementById('sel_kategoria').value,
-            ));
-            console.log(items);
-            //display();
+            ))
+            display();
         }
-
-        function display() {
-            document.getElementById('result').innerHTML = '';
+        function display(){ 
             items.forEach(x => {
+                document.getElementById('result').innerHTML = '';
+                document.getElementById('inp_nev').value = '';
+                document.getElementById('inp_mennyiseg').value = '';
                 document.getElementById('result').innerHTML +=
-                    `
-                    <li class="list-group-item"><i class="fa-brands fa-canadian-maple-leaf"></i> ${x.nev} ${x.mennyiseg} ${x.mennyiseg_egyseg}</li>
-                    `;
+                `<li class="list-group-item"> ${x.nev} ${x.mennyiseg} ${x.mennyiseg_egyseg}</li>`
             });
-        }
-
+            }
     </script>
 </body>
 

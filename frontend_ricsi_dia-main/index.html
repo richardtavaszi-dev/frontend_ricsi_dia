@@ -15,39 +15,41 @@
 
 <body>
     <div class="container-sm">
-        <h1>Bevásárlólista</h1>
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col sm-6">
+                <h1>Vásárlási lista</h1>
                 <h4>Hozzávaló hozzáadása</h4>
-                <label class="form-label">Hozzávaló neve</label>
-                <input id="inp_nev" type="text" class="form-control" />
+                <label class="form-label mt-2">Hozzávaló neve</label>
+                <input id="nev" type="text" class="form-control" />
                 <label class="form-label mt-2">Mennyiség</label>
-                <input id="inp_mennyiseg" type="number" class="form-control" />
-                <label class="form-label mt-2">Mennyiség egység</label>
-                <select id="sel_mennyiseg_egyseg" class="form-select">
+                <input id="mennyiseg" type="number" class="form-control" />
+                <label class="form-label mt-2">Mennyiségi egység</label>
+                <select id="mennyiseg_egyseg" class="form-select mt-2">
                     <option value="kg">kg</option>
-                    <option value="g">g</option>
-                    <option value="l">l</option>
-                    <option value="ml">ml</option>
+                    <option value="L">l</option>
                     <option value="db">db</option>
                 </select>
                 <label class="form-label mt-2">Kategória</label>
-                <select id="sel_kategoria" class="form-select">
-                    <option value="1">Húsfélék/tejtermékek </option>
-                    <option value="2">Gyümölcs/zöldség</option>
-                    <option value="3">Tésztafélék/péktermékek</option>
-                    <option value="4">Késztermékek</option>
+                <select id="kategoria" class="form-select">
+                    <option value="1">Húsfélék</option>
+                    <option value="2">Folyadék</option>
+                    <option value="3">Darabáru</option>
                 </select>
-                <button onclick="add()" class="btn btn-primary mt-2">Hozzáadás</button>
+                <button onclick="add()" class="btn btn-success mt-4">Hozzáad</button>
             </div>
-            <div class="col-sm-6">
-                <h4>Bevásárlólista</h4>
-                <ul id="result" class="list-group"></ul>
+            <div class="col sm-6">
+                <h4 style="margin-top: 45px;">Bevásárlólista</h4>
+                <ul id="result" class="list-group">
+                </ul>
             </div>
         </div>
     </div>
     <script>
         class Shopitem {
+            nev;
+            mennyiseg;
+            mennyiseg_egyseg;
+            kategoria;
             constructor(nev, mennyiseg, mennyiseg_egyseg, kategoria) {
                 this.id = crypto.randomUUID();
                 this.nev = nev;
@@ -56,25 +58,41 @@
                 this.kategoria = kategoria;
             }
         }
-        items = [];
         function add() {
             items.push(new Shopitem(
-                document.getElementById('inp_nev').value,
-                parseInt(document.getElementById('inp_mennyiseg').value),
-                document.getElementById('sel_mennyiseg_egyseg').value,
-                document.getElementById('sel_kategoria').value,
-            ))
+                document.getElementById('nev').value,
+                parseInt(document.getElementById('mennyiseg').value),
+                document.getElementById('mennyiseg_egyseg').value,
+                document.getElementById('kategoria').value,
+            ));
+            save();
             display();
         }
-        function display(){ 
+        function display() {
+            document.getElementById('result').innerHTML = '';
             items.forEach(x => {
-                document.getElementById('result').innerHTML = '';
-                document.getElementById('inp_nev').value = '';
-                document.getElementById('inp_mennyiseg').value = '';
                 document.getElementById('result').innerHTML +=
-                `<li class="list-group-item"> ${x.nev} ${x.mennyiseg} ${x.mennyiseg_egyseg}</li>`
+                    `
+            <li class="list-group-item">${x.nev} ${x.mennyiseg} ${x.mennyiseg_egyseg}
+                <button type="button" class="btn btn-danger btn-sm" onclick="remove('${x.id}')">Törlés</button>
+                </li>
+            `
             });
-            }
+        }
+        function remove(id) {
+            items =  items.filter(x => x.id !== id);
+            save();
+            display();
+        }
+        function load() {
+            items = JSON.parse(localStorage.getItem('items') ?? '[]');
+        }
+        function save() {
+            localStorage.setItem('items', JSON.stringify(items));
+        }
+         items = [];
+        load();
+        display();
     </script>
 </body>
 
